@@ -1,3 +1,117 @@
+## v2.9.2
+
+`2023-03-04`
+
+手动部署的同学，务必删除根目录和`service`中的`node_modules`重新安装依赖，降低出现问题的概率，自动部署的不需要做改动。
+
+### Feature
+- 感谢 [hyln9](https://github.com/Chanzhaoyu/chatgpt-web/pull/247) 添加对渲染 `LaTex` 数学公式的支持
+- 感谢 [ottocsb](https://github.com/Chanzhaoyu/chatgpt-web/pull/227) 添加支持 `webAPP` (苹果添加到主页书签访问)支持
+- 添加 `OPENAI_API_BASE_URL` 可选环境变量[#249]
+## Enhancement
+- 优化在高分屏上主题内容的最大宽度[#257]
+- 现在文字按单词截断[#215][#225]
+### BugFix
+- 修复动态生成时代码块不能被复制的问题[#251][#260]
+- 修复 `iOS` 移动端输入框不会被键盘顶起的问题[#256]
+- 修复控制台渲染警告
+## Other
+- 更新依赖至最新
+- 修改 `README` 内容
+
+## v2.9.1
+
+`2023-03-02`
+
+### Feature
+- 代码块添加当前代码语言显示和复制功能[#197][#196]
+- 完善多语言，现在可以切换中英文显示
+
+## Enhancement
+- 由[Zo3i](https://github.com/Chanzhaoyu/chatgpt-web/pull/187) 完善 `docker-compose` 部署文档
+
+### BugFix
+- 由 [ottocsb](https://github.com/Chanzhaoyu/chatgpt-web/pull/200) 修复头像修改不同步的问题
+## Other
+- 更新依赖至最新
+- 修改 `README` 内容
+## v2.9.0
+
+`2023-03-02`
+
+### Feature
+- 现在能复制带格式的消息文本
+- 新设计的设定页面，可以自定义姓名、描述、头像（链接方式）
+- 新增`403`和`404`页面以便扩展
+
+## Enhancement
+- 更新 `chatgpt` 使 `ChatGPTAPI` 支持 `gpt-3.5-turbo-0301`（默认）
+- 取消了前端超时限制设定
+
+## v2.8.3
+
+`2023-03-01`
+
+### Feature
+- 消息已输出内容不会因为中断而消失[#167]
+- 添加复制消息按钮[#133]
+
+### Other
+- `README` 添加声明内容
+
+## v2.8.2
+
+`2023-02-28`
+### Enhancement
+- 代码主题调整为 `One Dark - light|dark` 适配深色模式
+### BugFix
+- 修复普通文本代码渲染和深色模式下的问题[#139][#154]
+
+## v2.8.1
+
+`2023-02-27`
+
+### BugFix
+- 修复 `API` 版本不是 `Markdown` 时，普通 `HTML` 代码会被渲染的问题 [#146]
+
+## v2.8.0
+
+`2023-02-27`
+
+- 感谢 [puppywang](https://github.com/Chanzhaoyu/chatgpt-web/commit/628187f5c3348bda0d0518f90699a86525d19018) 修复了 `2.7.0` 版本中关于流输出数据的问题（使用 `nginx` 需要自行配置 `octet-stream` 相关内容）
+
+- 关于为什么使用 `octet-stream` 而不是 `sse`，是因为更好的兼容之前的模式。
+
+- 建议更新到此版本获得比较完整的体验
+
+### Enhancement
+- 优化了部份代码和类型提示
+- 输入框添加换行提示
+- 移动端输入框现在回车为换行，而不是直接提交
+- 移动端双击标题返回顶部，箭头返回底部
+
+### BugFix
+- 流输出数据下的问题[#122]
+- 修复了 `API Key` 下部份代码不换行的问题
+- 修复移动端深色模式部份样式问题[#123][#126]
+- 修复主题模式图标不一致的问题[#126]
+
+## v2.7.3
+
+`2023-02-25`
+
+### Feature
+- 适配系统深色模式 [#118](https://github.com/Chanzhaoyu/chatgpt-web/issues/103)
+### BugFix
+- 修复用户消息能被渲染为 `HTML` 问题 [#117](https://github.com/Chanzhaoyu/chatgpt-web/issues/117)
+
+## v2.7.2
+
+`2023-02-24`
+### Enhancement
+- 消息使用 [github-markdown-css](https://www.npmjs.com/package/github-markdown-css) 进行美化，现在支持全语法
+- 移除测试无用函数
+
 ## v2.7.1
 
 `2023-02-23`

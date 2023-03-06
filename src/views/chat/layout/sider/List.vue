@@ -15,7 +15,9 @@ const dataSources = computed(() => chatStore.history)
 async function handleSelect({ uuid }: Chat.History) {
   if (isActive(uuid))
     return
-
+    
+  if(chatStore.active)
+    chatStore.updateHistory(chatStore.active, { isEdit: false })
   await chatStore.setActive(uuid)
 
   if (isMobile.value)
@@ -49,14 +51,14 @@ function isActive(uuid: number) {
       <template v-if="!dataSources.length">
         <div class="flex flex-col items-center mt-4 text-center text-neutral-300">
           <SvgIcon icon="ri:inbox-line" class="mb-2 text-3xl" />
-          <span>No history</span>
+          <span>{{ $t('common.noData') }}</span>
         </div>
       </template>
       <template v-else>
         <div v-for="(item, index) of dataSources" :key="index">
           <a
-            class="relative flex items-center gap-3 px-3 py-3 break-all border rounded-md cursor-pointer hover:bg-neutral-100 group"
-            :class="isActive(item.uuid) && ['border-[#4b9e5f]', 'bg-neutral-100', 'text-[#4b9e5f]', 'pr-14']"
+            class="relative flex items-center gap-3 px-3 py-3 break-all border rounded-md cursor-pointer hover:bg-neutral-100 group dark:border-neutral-800 dark:hover:bg-[#24272e]"
+            :class="isActive(item.uuid) && ['border-[#4b9e5f]', 'bg-neutral-100', 'text-[#4b9e5f]', 'dark:bg-[#24272e]', 'dark:border-[#4b9e5f]', 'pr-14']"
             @click="handleSelect(item)"
           >
             <span>
@@ -87,7 +89,7 @@ function isActive(uuid: number) {
                       <SvgIcon icon="ri:delete-bin-line" />
                     </button>
                   </template>
-                  Are you sure to clear this history?
+                  {{ $t('chat.deleteHistoryConfirm') }}
                 </NPopconfirm>
               </template>
             </div>

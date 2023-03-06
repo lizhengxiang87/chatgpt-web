@@ -1,9 +1,15 @@
 # ChatGPT Web
 
-> 使用 `express` 和 `vue3` 搭建的支持 `ChatGPT` 双模型演示网页
+<div style="font-size: 1.5rem;">
+  <a href="./README.md">中文</a> |
+  <a href="./README.en.md">English</a> 
+</div>
+</br>
 
-![cover](./docs/cover.png)
-![cover2](./docs/cover2.png)
+> 声明：此项目只发布于 Github，基于 MIT 协议，免费且作为开源学习使用。并且不会有任何形式的卖号、付费服务、讨论群、讨论组等行为。谨防受骗。
+
+![cover](./docs/c1.png)
+![cover2](./docs/c2.png)
 
 - [ChatGPT Web](#chatgpt-web)
 	- [介绍](#介绍)
@@ -30,21 +36,22 @@
 			- [前端网页](#前端网页-1)
 	- [常见问题](#常见问题)
 	- [参与贡献](#参与贡献)
+	- [赞助](#赞助)
 	- [License](#license)
 ## 介绍
 
 支持双模型，提供了两种非官方 `ChatGPT API` 方法
 
-|  方式   | 免费？  | 可靠性  | 质量 |
-|  ----  | ----  | ----  | ----  |
-| `ChatGPTAPI(GPT-3)`  | 否 | 	可靠 | 较笨 |
-| `ChatGPTUnofficialProxyAPI(网页 accessToken)`  | 	是 |  不可靠 | 聪明 |
-
-***Note:*** 网页 `accessToken` 存在大约 8 小时，而且国内地区网络问题更推荐使用 `GPT-3` 的方式
+| 方式                                          | 免费？ | 可靠性     | 质量 |
+| --------------------------------------------- | ------ | ---------- | ---- |
+| `ChatGPTAPI(gpt-3.5-turbo-0301)`                           | 否     | 可靠       | 相对较笨 |
+| `ChatGPTUnofficialProxyAPI(网页 accessToken)` | 是     | 相对不可靠 | 聪明 |
 
 对比：
-1. `ChatGPTAPI` 使用 `text-davinci-003` 通过官方`OpenAI`补全`API`模拟`ChatGPT`（最稳健的方法，但它不是免费的，并且没有使用针对聊天进行微调的模型）
+1. `ChatGPTAPI` 使用 `gpt-3.5-turbo-0301` 通过官方`OpenAI`补全`API`模拟`ChatGPT`（最稳健的方法，但它不是免费的，并且没有使用针对聊天进行微调的模型）
 2. `ChatGPTUnofficialProxyAPI` 使用非官方代理服务器访问 `ChatGPT` 的后端`API`，绕过`Cloudflare`（使用真实的的`ChatGPT`，非常轻量级，但依赖于第三方服务器，并且有速率限制）
+
+[查看详情](https://github.com/Chanzhaoyu/chatgpt-web/issues/138)
 
 切换方式：
 1. 进入 `service/.env` 文件
@@ -54,11 +61,19 @@
 
 反向代理：
 
-`ChatGPTUnofficialProxyAPI`时可用 [详情](https://github.com/transitive-bullshit/chatgpt-api#reverse-proxy)
+`ChatGPTUnofficialProxyAPI`时可用
 
 ```shell
 # service/.env
 API_REVERSE_PROXY=
+```
+
+环境变量：
+
+全部参数变量请查看或[这里](#docker-参数示例)
+
+```
+/service/.env
 ```
 
 ## 待实现路线
@@ -68,9 +83,9 @@ API_REVERSE_PROXY=
 
 [✓] 对代码等消息类型的格式化美化处理
 
-[✗] 界面多语言
+[✓] 界面多语言
 
-[✗] 界面主题
+[✓] 界面主题
 
 [✗] More...
 
@@ -144,8 +159,11 @@ pnpm dev
 
 - `OPENAI_API_KEY` 二选一
 - `OPENAI_ACCESS_TOKEN`  二选一，同时存在时，`OPENAI_API_KEY` 优先
+- `OPENAI_API_BASE_URL`  可选，设置 `OPENAI_API_KEY` 时可用
 - `API_REVERSE_PROXY` 可选，设置 `OPENAI_ACCESS_TOKEN` 时可用 [参考](#介绍)
 - `TIMEOUT_MS` 超时，单位毫秒，可选
+- `SOCKS_PROXY_HOST` 可选，和 SOCKS_PROXY_PORT 一起时生效
+- `SOCKS_PROXY_PORT` 可选，和 SOCKS_PROXY_HOST 一起时生效
 
 ![docker](./docs/docker.png)
 
@@ -173,7 +191,7 @@ version: '3'
 
 services:
   app:
-    image: chenzhaoyu94/chatgpt-web:main
+    image: chenzhaoyu94/chatgpt-web # 总是使用 latest ,更新时重新 pull 该 tag 镜像即可
     ports:
       - 3002:3002
     environment:
@@ -181,25 +199,34 @@ services:
       OPENAI_API_KEY: xxxxxx
       # 二选一
       OPENAI_ACCESS_TOKEN: xxxxxx
+      # API接口地址，可选，设置 OPENAI_API_KEY 时可用
+      OPENAI_API_BASE_URL: xxxx
       # 反向代理，可选
       API_REVERSE_PROXY: xxx
       # 超时，单位毫秒，可选
       TIMEOUT_MS: 60000
+      # Socks代理，可选，和 SOCKS_PROXY_PORT 一起时生效
+      SOCKS_PROXY_HOST: xxxx
+      # Socks代理端口，可选，和 SOCKS_PROXY_HOST 一起时生效
+      SOCKS_PROXY_PORT: xxxx
 ```
-
+- `OPENAI_API_BASE_URL`  可选，设置 `OPENAI_API_KEY` 时可用
 ###  使用 Railway 部署
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/yytmgc)
 
 #### Railway 环境变量
 
-| 环境变量名称                | 必填 | 备注                    |
-| --------------------------- | ---- | ----------------------- |
-| `PORT` | 必填    | 默认 `3002`  |
-| `TIMEOUT_MS` | 可选    | 超时时间，单位毫秒，   |
-| `OPENAI_API_KEY` | `OpenAI API` 二选一    | 使用 `OpenAI API` 所需的 `apiKey` [(获取 apiKey)](https://platform.openai.com/overview)   |
-| `OPENAI_ACCESS_TOKEN` | `Web API` 二选一   | 使用 `Web API` 所需的 `accessToken` [(获取 accessToken)](https://chat.openai.com/api/auth/session)   |
-| `API_REVERSE_PROXY` | 可选，`Web API` 时可用    | `Web API` 反向代理地址 [详情](https://github.com/transitive-bullshit/chatgpt-api#reverse-proxy)   |
+| 环境变量名称          | 必填                   | 备注                                                                                               |
+| --------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `PORT`                | 必填                   | 默认 `3002`                                                                                        |
+| `TIMEOUT_MS`          | 可选                   | 超时时间，单位毫秒，                                                                               |
+| `OPENAI_API_KEY`      | `OpenAI API` 二选一    | 使用 `OpenAI API` 所需的 `apiKey` [(获取 apiKey)](https://platform.openai.com/overview)            |
+| `OPENAI_ACCESS_TOKEN` | `Web API` 二选一       | 使用 `Web API` 所需的 `accessToken` [(获取 accessToken)](https://chat.openai.com/api/auth/session) |
+| `OPENAI_API_BASE_URL`   | 可选，`OpenAI API` 时可用 |  `API`接口地址  |
+| `API_REVERSE_PROXY`   | 可选，`Web API` 时可用 | `Web API` 反向代理地址 [详情](https://github.com/transitive-bullshit/chatgpt-api#reverse-proxy)    |
+| `SOCKS_PROXY_HOST`   | 可选，和 `SOCKS_PROXY_PORT` 一起时生效 | Socks代理    |
+| `SOCKS_PROXY_PORT`   | 可选，和 `SOCKS_PROXY_HOST` 一起时生效 | Socks代理端口    |
 
 > 注意: `Railway` 修改环境变量会重新 `Deploy`
 
@@ -247,6 +274,10 @@ Q: 文件保存时全部爆红?
 
 A: `vscode` 请安装项目推荐插件，或手动安装 `Eslint` 插件。
 
+Q: 前端没有打字机效果？
+
+A: 一种可能原因是经过 Nginx 反向代理，开启了 buffer，则 Nginx 会尝试从后端缓冲一定大小的数据再发送给浏览器。请尝试在反代参数后添加 `proxy_buffering off;`，然后重载 Nginx。其他 web server 配置同理。
+
 ## 参与贡献
 
 贡献之前请先阅读 [贡献指南](./CONTRIBUTING.md)
@@ -256,6 +287,21 @@ A: `vscode` 请安装项目推荐插件，或手动安装 `Eslint` 插件。
 <a href="https://github.com/Chanzhaoyu/chatgpt-web/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Chanzhaoyu/chatgpt-web" />
 </a>
+
+## 赞助
+
+如果你觉得这个项目对你有帮助，并且情况允许的话，可以给我一点点支持，总之非常感谢支持～
+
+<div style="display: flex; gap: 20px;">
+	<div style="text-align: center">
+		<img style="max-width: 100%" src="./docs/wechat.png" alt="微信" />
+		<p>WeChat Pay</p>
+	</div>
+	<div style="text-align: center">
+		<img style="max-width: 100%" src="./docs/alipay.png" alt="支付宝" />
+		<p>Alipay</p>
+	</div>
+</div>
 
 ## License
 MIT © [ChenZhaoYu](./license)
